@@ -1,8 +1,23 @@
 const BadRequest = require('../errors/BadRequest')
 const DuplicateError = require('../errors/DuplicateError')
+const NotFound = require('../errors/NotFound')
 const helper = require('../utils/helper.util')
 
 let cars = []
+
+const getCars = () => {
+  return cars
+}
+
+const getCar = (plate) => {
+  const existingCar = cars.find((car) => car.plate === plate)
+
+  if (!existingCar) {
+    throw new NotFound('Car with this plate not found.')
+  }
+
+  return existingCar
+}
 
 const registerCar = (newCar) => {
   const { plate, color, brand } = newCar
@@ -32,5 +47,7 @@ const registerCar = (newCar) => {
 }
 
 module.exports = {
-  registerCar
+  registerCar,
+  getCars,
+  getCar,
 }
