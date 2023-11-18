@@ -1,6 +1,7 @@
 const express = require('express')
 const bodyParser = require('body-parser');
-const carRouter = require('./src/routes/car.route')
+const carRouter = require('./src/routes/car.route');
+const errorHandler = require('./src/middlewares/errorHandler');
 
 
 const app = express()
@@ -14,6 +15,8 @@ app.get('/', (req, res) => {
 })
 
 app.use("/api/v1/cars", carRouter)
+
+app.use(errorHandler)
 
 app.listen(PORT, () => {
   console.log(`App listening on port ${PORT}`)
