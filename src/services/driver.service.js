@@ -1,8 +1,20 @@
 const uuid = require('uuid')
+const BadRequest = require('../errors/BadRequest')
+const NotFound = require('../errors/NotFound')
 
 let drivers = []
 
-const getDrivers = () => drivers;
+const getDrivers = () => drivers
+
+const getDriver = (id) => {
+  const existingDriver = drivers.find((driver) => driver.id === id)
+
+  if (!existingDriver) {
+    throw new NotFound(`Driver with id '${id}' not found.`)
+  }
+
+  return existingDriver
+}
 
 const registerDriver = (newDriver) => {
   const { name } = newDriver
@@ -25,5 +37,6 @@ const registerDriver = (newDriver) => {
 
 module.exports = {
   registerDriver,
-  getDrivers
+  getDrivers,
+  getDriver,
 }

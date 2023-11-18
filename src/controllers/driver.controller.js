@@ -9,16 +9,24 @@ const getDrivers = (req, res, next) => {
   }
 }
 
+const getDriver = (req, res, next) => {
+  try {
+    const id = req.params.id
+    const driver = driverService.getDriver(id)
+    res.status(200).json(driver)
+  } catch (error) {
+    next(error)
+  }
+}
+
 const registerDriver = (req, res, next) => {
   try {
     const newDriver = req.body
     const registeredDriver = driverService.registerDriver(newDriver)
-    res
-      .status(201)
-      .json({
-        message: 'Driver successfully registered',
-        driver: registeredDriver,
-      })
+    res.status(201).json({
+      message: 'Driver successfully registered',
+      driver: registeredDriver,
+    })
   } catch (error) {
     next(error)
   }
@@ -26,5 +34,6 @@ const registerDriver = (req, res, next) => {
 
 module.exports = {
   registerDriver,
-  getDrivers
+  getDrivers,
+  getDriver,
 }
