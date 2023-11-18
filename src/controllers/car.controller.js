@@ -23,8 +23,8 @@ const getCars = (req, res, next) => {
 
 const getCar = (req, res, next) => {
   try {
-    const plate = req.params.id
-    const car = carService.getCar(plate)
+    const id = req.params.id
+    const car = carService.getCar(id)
     res.status(200).json(car)
   } catch (error) {
     next(error)

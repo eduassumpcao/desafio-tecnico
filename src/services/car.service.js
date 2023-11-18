@@ -2,6 +2,7 @@ const BadRequest = require('../errors/BadRequest')
 const DuplicateError = require('../errors/DuplicateError')
 const NotFound = require('../errors/NotFound')
 const helper = require('../utils/helper.util')
+const uuid = require('uuid')
 
 let cars = []
 
@@ -25,12 +26,11 @@ const getCars = (filters = {}) => {
   return filteredCars
 }
 
-const getCar = (plate) => {
-  const upperCasePlate = plate.toUpperCase()
-  const existingCar = cars.find((car) => car.plate === upperCasePlate)
+const getCar = (id) => {
+  const existingCar = cars.find((car) => car.id === id)
 
   if (!existingCar) {
-    throw new NotFound(`Car with plate '${upperCasePlate}' not found.`)
+    throw new NotFound(`Car with id '${id}' not found.`)
   }
 
   return existingCar
@@ -62,6 +62,7 @@ const registerCar = (newCar) => {
   }
 
   const car = {
+    id: uuid.v4(),
     plate: upperCasePlate,
     color: upperCaseColor,
     brand: upperCaseBrand,
