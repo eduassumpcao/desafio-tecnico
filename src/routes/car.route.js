@@ -11,4 +11,7 @@ router.get('/:id', carController.getCar)
 /* POST Car */
 router.post('/', carController.registerCar)
 
+/* PUT Car */
+router.put('/:id', carController.updateCar)
+
 module.exports = router

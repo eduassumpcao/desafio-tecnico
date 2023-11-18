@@ -29,4 +29,15 @@ const registerCar = (req, res, next) => {
   }
 }
 
-module.exports = { registerCar, getCars, getCar }
+const updateCar = (req, res, next) => {
+  try {
+    const plate = req.params.id
+    const newCarData = req.body
+    const updatedCar = carService.updateCar(plate, newCarData)
+    res.status(200).json(updatedCar)
+  } catch (error) {
+    next(error)
+  }
+}
+
+module.exports = { registerCar, getCars, getCar, updateCar }
