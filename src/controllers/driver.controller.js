@@ -1,5 +1,14 @@
 const driverService = require('../services/driver.service')
 
+const getDrivers = (req, res, next) => {
+  try {
+    const drivers = driverService.getDrivers()
+    res.status(200).json(drivers)
+  } catch (error) {
+    next(error)
+  }
+}
+
 const registerDriver = (req, res, next) => {
   try {
     const newDriver = req.body
@@ -17,4 +26,5 @@ const registerDriver = (req, res, next) => {
 
 module.exports = {
   registerDriver,
+  getDrivers
 }

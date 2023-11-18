@@ -2,6 +2,8 @@ const uuid = require('uuid')
 
 let drivers = []
 
+const getDrivers = () => drivers;
+
 const registerDriver = (newDriver) => {
   const { name } = newDriver
 
@@ -23,4 +25,5 @@ const registerDriver = (newDriver) => {
 
 module.exports = {
   registerDriver,
+  getDrivers
 }
