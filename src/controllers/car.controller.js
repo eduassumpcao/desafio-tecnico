@@ -12,7 +12,7 @@ const getCars = (req, res, next) => {
     if (color) {
       filters.color = color
     }
-    console.log(filters)
+
     const cars = carService.getCars(filters)
 
     res.status(200).json(cars)
@@ -35,7 +35,9 @@ const registerCar = (req, res, next) => {
   try {
     const newCar = req.body
     const registeredCar = carService.registerCar(newCar)
-    res.status(201).json(registeredCar)
+    res
+      .status(201)
+      .json({ message: 'Car successfully registered', car: registeredCar })
   } catch (error) {
     next(error)
   }
@@ -46,7 +48,9 @@ const updateCar = (req, res, next) => {
     const plate = req.params.id
     const newCarData = req.body
     const updatedCar = carService.updateCar(plate, newCarData)
-    res.status(200).json(updatedCar)
+    res
+      .status(200)
+      .json({ message: 'Car successfully updated', car: updatedCar })
   } catch (error) {
     next(error)
   }
