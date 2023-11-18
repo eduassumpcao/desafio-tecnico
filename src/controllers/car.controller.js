@@ -2,7 +2,19 @@ const carService = require('../services/car.service')
 
 const getCars = (req, res, next) => {
   try {
-    const cars = carService.getCars()
+    const { brand, color } = req.query
+    const filters = {}
+
+    if (brand) {
+      filters.brand = brand
+    }
+
+    if (color) {
+      filters.color = color
+    }
+    console.log(filters)
+    const cars = carService.getCars(filters)
+
     res.status(200).json(cars)
   } catch (error) {
     next(error)
