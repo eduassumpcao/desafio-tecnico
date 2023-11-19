@@ -60,7 +60,7 @@ const deleteCar = (req, res, next) => {
   try {
     const id = req.params.id
     carService.deleteCar(id)
-    res.status(204)
+    res.status(204).send()
   } catch (error) {
     next(error)
   }
