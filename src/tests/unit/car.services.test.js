@@ -191,13 +191,12 @@ describe('carService', () => {
       expect(memoryStorage.setCars).toHaveBeenCalledWith([])
     })
 
-    test("deleteCar is called with an invalid id, throws NotFound", () => {
-      const validCarId = "SOMEUUID";
-      memoryStorage.getCars.mockReturnValue([{ id: validCarId }]);
-      const invalidCarId = "INVALID_ID";
-      expect(() => carService.deleteCar(invalidCarId)).toThrowError(NotFound);
-      expect(memoryStorage.getCars).toHaveBeenCalled();
-    });
+    test('deleteCar is called with an invalid id, throws NotFound', () => {
+      const validCarId = 'SOMEUUID'
+      memoryStorage.getCars.mockReturnValue([{ id: validCarId }])
+      const invalidCarId = 'INVALID_ID'
+      expect(() => carService.deleteCar(invalidCarId)).toThrowError(NotFound)
+      expect(memoryStorage.getCars).toHaveBeenCalled()
+    })
   })
-  
 })

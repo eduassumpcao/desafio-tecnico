@@ -103,17 +103,18 @@ describe('carController', () => {
       car: expectedUpdatedCar,
     })
   })
-  describe("deleteCar", () => {
+
+  describe('deleteCar', () => {
     test('deleteCar calls carService.deleteCar with correct id', () => {
       const req = { params: { id: 'RANDOMUUID' } }
       const res = { status: jest.fn().mockReturnThis(), json: jest.fn() }
-  
+
       const expectedId = 'RANDOMUUID'
-  
+
       carService.deleteCar.mockReturnValue()
 
       carController.deleteCar(req, res)
-  
+
       expect(carService.deleteCar).toHaveBeenCalledWith(expectedId)
       expect(res.status).toHaveBeenCalledWith(204)
     })
