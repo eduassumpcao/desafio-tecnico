@@ -5,7 +5,7 @@ const carController = require('../controllers/car.controller')
 /* GET Cars */
 router.get('/', carController.getCars)
 
-/* GET Car by plate */
+/* GET Car */
 router.get('/:id', carController.getCar)
 
 /* POST Car */
