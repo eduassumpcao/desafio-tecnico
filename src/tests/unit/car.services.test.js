@@ -15,6 +15,13 @@ const sampleCar = {
   brand: 'TOYOTA',
 }
 
+const existingCar = {
+  id: 'existingId',
+  plate: 'ABC1234',
+  color: 'Red',
+  brand: 'Honda',
+}
+
 describe('carService', () => {
   beforeEach(() => {
     memoryStorage.getCars.mockReset()
@@ -72,12 +79,6 @@ describe('carService', () => {
     })
 
     test('registerCar is called with an existing plate.', () => {
-      const existingCar = {
-        id: 'existingId',
-        plate: 'ABC1234',
-        color: 'Red',
-        brand: 'Honda',
-      }
       memoryStorage.getCars.mockReturnValue([existingCar])
 
       expect(() => carService.registerCar(existingCar)).toThrowError(
@@ -110,12 +111,6 @@ describe('carService', () => {
     })
 
     test('updateCar updates an existing car with valid data', () => {
-      const existingCar = {
-        id: 'existingId',
-        plate: 'ABC1234',
-        color: 'Red',
-        brand: 'Honda',
-      }
       const updatedCarData = {
         plate: 'XYZ5678',
         color: 'Blue',
@@ -152,12 +147,6 @@ describe('carService', () => {
     })
 
     test('updateCar throws BadRequest error for invalid Brazilian plate format', () => {
-      const existingCar = {
-        id: 'existingId',
-        plate: 'ABC1234',
-        color: 'Red',
-        brand: 'Honda',
-      }
       const updatedCarData = {
         plate: 'XYZ56789', // Invalid plate format
         color: 'Blue',
@@ -173,12 +162,6 @@ describe('carService', () => {
     })
 
     test('updateCar throws DuplicateError for an existing plate with a different ID', () => {
-      const existingCar = {
-        id: 'existingId',
-        plate: 'ABC1234',
-        color: 'Red',
-        brand: 'Honda',
-      }
       const anotherCarWithSamePlate = {
         id: 'anotherId',
         plate: 'ABC1234',
@@ -197,4 +180,24 @@ describe('carService', () => {
       expect(memoryStorage.setCars).not.toHaveBeenCalled()
     })
   })
+
+  describe('deleteCar', () => {
+    test('deleteCar is called with a valid id', () => {
+      const sampleCarId = 'SOMEUUID'
+      memoryStorage.getCars.mockReturnValue([{ id: sampleCarId }])
+      const deleteCarId = sampleCarId
+      carService.deleteCar(deleteCarId)
+      expect(memoryStorage.getCars).toHaveBeenCalled()
+      expect(memoryStorage.setCars).toHaveBeenCalledWith([])
+    })
+
+    test("deleteCar is called with an invalid id, throws NotFound", () => {
+      const validCarId = "SOMEUUID";
+      memoryStorage.getCars.mockReturnValue([{ id: validCarId }]);
+      const invalidCarId = "INVALID_ID";
+      expect(() => carService.deleteCar(invalidCarId)).toThrowError(NotFound);
+      expect(memoryStorage.getCars).toHaveBeenCalled();
+    });
+  })
+  
 })
