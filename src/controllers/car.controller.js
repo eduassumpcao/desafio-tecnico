@@ -45,9 +45,9 @@ const registerCar = (req, res, next) => {
 
 const updateCar = (req, res, next) => {
   try {
-    const plate = req.params.id
+    const id = req.params.id
     const newCarData = req.body
-    const updatedCar = carService.updateCar(plate, newCarData)
+    const updatedCar = carService.updateCar(id, newCarData)
     res
       .status(200)
       .json({ message: 'Car successfully updated', car: updatedCar })
