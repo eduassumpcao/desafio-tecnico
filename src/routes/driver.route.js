@@ -11,4 +11,7 @@ router.get('/:id', driverController.getDriver)
 /* POST Driver */
 router.post('/', driverController.registerDriver)
 
+/* DELETE Driver */
+router.delete('/:id', driverController.deleteDriver)
+
 module.exports = router

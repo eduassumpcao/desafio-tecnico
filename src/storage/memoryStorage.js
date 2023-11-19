@@ -1,6 +1,7 @@
 class MemoryStorage {
   constructor() {
     this.carList = []
+    this.driverList = []
   }
 
   setCars(newCars) {
@@ -9,6 +10,14 @@ class MemoryStorage {
 
   getCars() {
     return this.carList
+  }
+
+  setDrivers(newDrivers) {
+    this.driverList = newDrivers
+  }
+
+  getDrivers() {
+    return this.driverList
   }
 }
 

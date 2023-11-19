@@ -32,8 +32,19 @@ const registerDriver = (req, res, next) => {
   }
 }
 
+const deleteDriver = (req, res, next) => {
+  try {
+    const id = req.params.id
+    driverService.deleteDriver(id)
+    res.status(204).send()
+  } catch (error) {
+    next(error)
+  }
+}
+
 module.exports = {
   registerDriver,
   getDrivers,
   getDriver,
+  deleteDriver,
 }
