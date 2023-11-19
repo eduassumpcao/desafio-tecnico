@@ -14,4 +14,7 @@ router.post('/', carController.registerCar)
 /* PUT Car */
 router.put('/:id', carController.updateCar)
 
+/* DELETE Car */
+router.delete('/:id', carController.deleteCar)
+
 module.exports = router

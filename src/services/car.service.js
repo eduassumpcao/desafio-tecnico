@@ -120,9 +120,22 @@ const updateCar = (id, newCarData) => {
   return updatedCar
 }
 
+const deleteCar = (id) => {
+  const cars = memoryStorage.getCars()
+  const existingCarIndex = cars.findIndex((car) => car.id === id)
+
+  if (existingCarIndex === -1) {
+    throw new NotFound(`Car with id '${id}' not found.`)
+  }
+
+  cars.splice(existingCarIndex, 1)
+  memoryStorage.setCars([...cars])
+}
+
 module.exports = {
   registerCar,
   getCars,
   getCar,
   updateCar,
+  deleteCar,
 }
