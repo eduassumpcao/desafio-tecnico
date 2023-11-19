@@ -3,13 +3,12 @@ const DuplicateError = require('../errors/DuplicateError')
 const NotFound = require('../errors/NotFound')
 const helper = require('../utils/helper.util')
 const uuid = require('uuid')
-
-let cars = []
+const memoryStorage = require('../storage/memoryStorage')
 
 const getCars = (filters = {}) => {
   const { brand, color } = filters
 
-  let filteredCars = cars
+  let filteredCars = memoryStorage.getCars()
 
   if (brand) {
     filteredCars = filteredCars.filter(
@@ -27,6 +26,7 @@ const getCars = (filters = {}) => {
 }
 
 const getCar = (id) => {
+  const cars = memoryStorage.getCars()
   const existingCar = cars.find((car) => car.id === id)
 
   if (!existingCar) {
@@ -45,6 +45,7 @@ const registerCar = (newCar) => {
     )
   }
 
+  const cars = memoryStorage.getCars()
   const upperCasePlate = plate.toUpperCase()
   const upperCaseColor = color.toUpperCase()
   const upperCaseBrand = brand.toUpperCase()
@@ -68,24 +69,27 @@ const registerCar = (newCar) => {
     brand: upperCaseBrand,
   }
 
-  cars.push(car)
+  memoryStorage.setCars([car, ...cars])
 
   return car
 }
 
-const updateCar = (originalPlate, newCarData) => {
+const updateCar = (id, newCarData) => {
   const { plate, color, brand } = newCarData
 
-  if (!plate || !color || !brand) {
-    throw new BadRequest(
-      'Invalid request. Please provide a valid JSON object with properties: plate, color, brand.'
-    )
+  const cars = memoryStorage.getCars()
+
+  const existingCarIndex = cars.findIndex((car) => car.id === id)
+
+  if (existingCarIndex === -1) {
+    throw new NotFound(`Car with id '${id}' not found.`)
   }
 
-  const originalPlateUpperCase = originalPlate.toUpperCase()
-  const newPlateUpperCase = plate.toUpperCase()
-  const newColorUpperCase = color.toUpperCase()
-  const newBrandUpperCase = brand.toUpperCase()
+  const existingCar = cars[existingCarIndex]
+
+  const newPlateUpperCase = plate?.toUpperCase() || existingCar.plate
+  const newColorUpperCase = color?.toUpperCase() || existingCar.color
+  const newBrandUpperCase = brand?.toUpperCase() || existingCar.brand
 
   if (!helper.validateBrazilianPlate(newPlateUpperCase)) {
     throw new BadRequest(
@@ -93,30 +97,25 @@ const updateCar = (originalPlate, newCarData) => {
     )
   }
 
-  const existingCarIndex = cars.findIndex(
-    (car) => car.plate === originalPlateUpperCase
+  const otherCarWithSamePlate = cars.find(
+    (car) => car.id !== id && car.plate === newPlateUpperCase
   )
 
-  if (existingCarIndex === -1) {
-    throw new NotFound(`Car with plate '${originalPlateUpperCase}' not found.`)
-  }
-
-  if (
-    originalPlateUpperCase !== newPlateUpperCase &&
-    cars.some((car) => car.plate === newPlateUpperCase)
-  ) {
+  if (otherCarWithSamePlate) {
     throw new DuplicateError(
-      `Car with plate '${newPlateUpperCase}' already exists.`
+      `Car with plate '${newPlateUpperCase}' already exists with a different ID.`
     )
   }
 
   const updatedCar = {
+    id: existingCar.id,
     plate: newPlateUpperCase,
     color: newColorUpperCase,
     brand: newBrandUpperCase,
   }
 
   cars[existingCarIndex] = updatedCar
+  memoryStorage.setCars([...cars])
 
   return updatedCar
 }
