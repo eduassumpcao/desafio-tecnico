@@ -1,6 +1,7 @@
 const express = require('express')
 const carRouter = require('./src/routes/car.route');
 const driverRouter = require('./src/routes/driver.route')
+const carUsageRoute = require('./src/routes/carUsage.route')
 const errorHandler = require('./src/middlewares/errorHandler');
 
 
@@ -15,6 +16,7 @@ app.get('/', (req, res) => {
 })
 
 app.use("/api/v1/cars", carRouter)
+app.use("/api/v1/car-usage", carUsageRoute)
 app.use("/api/v1/drivers", driverRouter)
 
 app.use(errorHandler)
