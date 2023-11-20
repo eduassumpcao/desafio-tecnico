@@ -2,7 +2,15 @@ const driverService = require('../services/driver.service')
 
 const getDrivers = (req, res, next) => {
   try {
-    const drivers = driverService.getDrivers()
+    const { name } = req.query
+    const filters = {}
+
+    if (name) {
+      filters.name = name
+    }
+
+    const drivers = driverService.getDrivers(filters)
+
     res.status(200).json(drivers)
   } catch (error) {
     next(error)
@@ -32,11 +40,24 @@ const registerDriver = (req, res, next) => {
   }
 }
 
+const updateDriver = (req, res, next) => {
+  try {
+    const id = req.params.id
+    const newDriverData = req.body
+    const updatedDriver = driverService.updateDriver(id, newDriverData)
+    res
+      .status(200)
+      .json({ message: 'Driver successfully updated', driver: updatedDriver })
+  } catch (error) {
+    next(error)
+  }
+}
+
 const deleteDriver = (req, res, next) => {
   try {
     const id = req.params.id
     driverService.deleteDriver(id)
-    res.status(204).send()
+    res.status(204).json()
   } catch (error) {
     next(error)
   }
@@ -47,4 +68,5 @@ module.exports = {
   getDrivers,
   getDriver,
   deleteDriver,
+  updateDriver,
 }

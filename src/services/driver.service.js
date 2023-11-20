@@ -3,7 +3,19 @@ const BadRequest = require('../errors/BadRequest')
 const NotFound = require('../errors/NotFound')
 const memoryStorage = require('../storage/memoryStorage')
 
-const getDrivers = () => memoryStorage.getDrivers()
+const getDrivers = (filters = {}) => {
+  const { name } = filters
+
+  let filteredDrivers = memoryStorage.getDrivers()
+
+  if (name) {
+    filteredDrivers = filteredDrivers.filter((driver) =>
+      driver.name.toUpperCase().startsWith(name.toUpperCase())
+    )
+  }
+
+  return filteredDrivers
+}
 
 const getDriver = (id) => {
   const drivers = memoryStorage.getDrivers()
@@ -35,6 +47,28 @@ const registerDriver = (newDriver) => {
   return driver
 }
 
+const updateDriver = (id, newDriver) => {
+  const { name } = newDriver
+
+  const drivers = memoryStorage.getDrivers()
+
+  const existingDriverIndex = drivers.findIndex((driver) => driver.id === id)
+
+  if (existingDriverIndex === -1) {
+    throw new NotFound(`Driver with id '${id}' not found.`)
+  }
+
+  const updatedDriver = {
+    id: id,
+    name: name,
+  }
+
+  drivers[existingDriverIndex] = updatedDriver
+  memoryStorage.setDrivers([...drivers])
+
+  return updatedDriver
+}
+
 const deleteDriver = (id) => {
   const drivers = memoryStorage.getDrivers()
   const existingDriverIndex = drivers.findIndex((driver) => driver.id === id)
@@ -52,4 +86,5 @@ module.exports = {
   getDrivers,
   getDriver,
   deleteDriver,
+  updateDriver,
 }
