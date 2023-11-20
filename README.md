@@ -86,15 +86,18 @@ Make sure you have Node.js and npm installed on your machine.
 - Start car usage by a driver:
     - Endpoint: POST /api/v1/car-usage/start
     - Request Body: JSON with driverId, carId, startDate, and reason.
-    - Example: { "driverId": "someUUID", "carId": "someUUID", "startDate": "2023-01-01", "reason": "Business Trip" }
+    - Example: { "driverId": "someUUID", "carId": "someUUID", "startDate": "TIMESTAMP", "reason": "Business Trip" }
 
 - Finish car usage by a driver:
-    - Endpoint: PUT /api/v1//car-usage/finish
-    - Request Body: JSON with driverId, carId, and endDate.
-    - Example: { "driverId": "someUUID", "carId": "someUUID", "endDate": "2023-01-01" }
+    - Endpoint: PUT /api/v1/car-usage/finish/:id
+    - Request Body: JSON with carUsageId and endDate.
+    - Example: { "endDate": "TIMESTAMP" }
+
+- Get a car usage by ID:
+    - Endpoint: GET /api/v1/car-usage/:id
 
 - List car usage records with driver and car details:
-    - Endpoint: GET /api/v1//car-usage
+    - Endpoint: GET /api/v1/car-usage
 
 ## Testing
 ```bash
