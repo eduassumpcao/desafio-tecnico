@@ -89,7 +89,7 @@ Make sure you have Node.js and npm installed on your machine.
     - Example: { "driverId": "someUUID", "carId": "someUUID", "startDate": "2023-01-01", "reason": "Business Trip" }
 
 - Finish car usage by a driver:
-    - Endpoint: POST /api/v1//car-usage/finish
+    - Endpoint: PUT /api/v1//car-usage/finish
     - Request Body: JSON with driverId, carId, and endDate.
     - Example: { "driverId": "someUUID", "carId": "someUUID", "endDate": "2023-01-01" }
 
